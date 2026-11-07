@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>טרנספורמציות בסטטיסטיקה - 4 יח"ל</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- MathJax for rendering LaTeX formulas -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- html2canvas for Screenshot generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Rubik', sans-serif; }
+        .fade-in { animation: fadeIn 0.4s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .quiz-option:hover { transform: scale(1.02); }
+        .quiz-option { transition: all 0.2s; }
+        
+        /* עיצוב הלשוניות (תיקיות) */
+        .tab-btn { transition: all 0.3s ease; border-bottom: none; cursor: pointer; }
+        .tab-active { background-color: #ffffff; color: #1e40af; border-top: 4px solid #2563eb; box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .tab-inactive { background-color: #e2e8f0; color: #475569; border-top: 4px solid transparent; }
+        .tab-inactive:hover { background-color: #cbd5e1; }
+        .folder-content { display: none; animation: fadeIn 0.5s; }
+        .folder-content.active { display: block; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <div class="max-w-4xl mx-auto p-4 md:p-8">
+        <!-- Header -->
+        <header class="bg-blue-600 text-white rounded-2xl p-8 mb-6 shadow-lg text-center">
+            <h1 class="text-4xl font-bold mb-3">טרנספורמציות בסטטיסטיקה</h1>
+            <h2 class="text-xl opacity-90">יחידת לימוד אינטראקטיבית - רמת 4 יח"ל</h2>
+        </header>
+
+        <!-- Folder Tabs -->
+        <div class="flex flex-wrap mb-0 border-b border-slate-300">
+            <button onclick="switchTab('part1')" id="tab-part1" class="tab-btn tab-active flex-1 py-4 px-2 font-bold text-lg md:text-xl rounded-t-2xl flex items-center justify-center gap-2">
+                <span>📁</span> מדדי מרכז ומדדי פיזור
+            </button>
+            <button onclick="switchTab('part2')" id="tab-part2" class="tab-btn tab-inactive flex-1 py-4 px-2 font-bold text-lg md:text-xl rounded-t-2xl flex items-center justify-center gap-2">
+                <span>📁</span> טרנספורמציות בסטטיסטיקה
+            </button>
+            <button onclick="switchTab('part3')" id="tab-part3" class="tab-btn tab-inactive flex-1 py-4 px-2 font-bold text-lg md:text-xl rounded-t-2xl flex items-center justify-center gap-2">
+                <span>📁</span> מבדק מסכם
+            </button>
+        </div>
+
+        <!-- Part 1: Central Tendency & Dispersion -->
+        <section id="part1" class="folder-content active bg-white rounded-b-2xl p-6 md:p-8 mb-8 shadow-sm border border-t-0 border-slate-200">
+            <h2 class="text-3xl font-bold text-blue-700 mb-6 flex items-center">
+                מדדי מרכז ומדדי פיזור
+            </h2>
+            
+            <div class="grid md:grid-cols-2 gap-8 mb-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-3 text-teal-600">מדדי מרכז</h3>
+                    <p class="mb-4 text-slate-600">מדדים אלו מתארים את הערך האופייני או המרכזי של קבוצת הנתונים.</p>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><strong>הממוצע ($\bar{x}$):</strong> סכום כל הערכים מחולק במספרם.</li>
+                        <li><strong>החציון:</strong> הערך הנמצא בדיוק באמצע, לאחר סידור הנתונים מהקטן לגדול.</li>
+                        <li><strong>השכיח:</strong> הערך שמופיע הכי הרבה פעמים בנתונים.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-3 text-orange-600">מדדי פיזור</h3>
+                    <p class="mb-4 text-slate-600">מדדים אלו מתארים עד כמה הנתונים מפוזרים או רחוקים מהמרכז.</p>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><strong>הטווח:</strong> ההפרש בין הערך המקסימלי למינימלי.</li>
+                        <li><strong>השונות ($S^2$):</strong> ממוצע ריבועי המרחקים של הנתונים מהממוצע.</li>
+                        <li><strong>סטיית התקן ($S$):</strong> השורש הריבועי של השונות. מתארת פיזור באותן יחידות של הנתונים.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bg-blue-50 p-6 rounded-xl mb-8">
+                <h3 class="font-bold text-lg mb-2">💡 דוגמה פתורה:</h3>
+                <p>נתונים הציונים הבאים: $70, 80, 80, 90$.</p>
+                <ul class="mt-2 space-y-1">
+                    <li><strong>הממוצע:</strong> $\frac{70+80+80+90}{4} = \frac{320}{4} = 80$</li>
+                    <li><strong>השכיח:</strong> $80$ (מופיע פעמיים)</li>
+                    <li><strong>הטווח:</strong> $90 - 70 = 20$</li>
+                    <li><strong>השונות ($S^2$):</strong> $\frac{(70-80)^2 + (80-80)^2 + (80-80)^2 + (90-80)^2}{4} = \frac{100 + 0 + 0 + 100}{4} = \frac{200}{4} = 50$</li>
+                    <li><strong>סטיית התקן ($S$):</strong> $\sqrt{50} \approx 7.07$</li>
+                </ul>
+            </div>
+
+            <!-- Self Practice 1 -->
+            <div class="border-t pt-6">
+                <h3 class="text-xl font-bold mb-4">תרגול עצמי</h3>
+                
+                <!-- Q1 -->
+                <div class="mb-6">
+                    <div id="q1-container" class="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                        <p class="font-medium mb-4 text-lg">1. בכיתה נמדדו הגבהים של 5 תלמידים (בס"מ): $150, 160, 160, 170, 180$. מהם הממוצע והטווח?</p>
+                        <div class="space-y-3" id="q1-options">
+                            <!-- Options injected by JS -->
+                        </div>
+                        <div id="q1-feedback" class="mt-4 hidden p-4 rounded-lg font-medium text-sm"></div>
+                    </div>
+                </div>
+
+                <!-- Q2 -->
+                <div>
+                    <div id="q2-container" class="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                        <p class="font-medium mb-4 text-lg">2. ציוני קבוצת תלמידים הם: $70, 70, 80, 90$. מהם החציון והשכיח של הציונים?</p>
+                        <div class="space-y-3" id="q2-options">
+                            <!-- Options injected by JS -->
+                        </div>
+                        <div id="q2-feedback" class="mt-4 hidden p-4 rounded-lg font-medium text-sm"></div>
+                    </div>
+                </div>
+
+                <!-- Q3 (New) -->
+                <div class="mt-6">
+                    <div id="q1_3-container" class="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                        <p class="font-medium mb-4 text-lg">3. הממוצע של 4 מספרים הוא $10$. שלושה מהמספרים הם $8, 12, 10$. מהו המספר הרביעי?</p>
+                        <div class="space-y-3" id="q1_3-options"></div>
+                        <div id="q1_3-feedback" class="mt-4 hidden p-4 rounded-lg font-medium text-sm"></div>
+                    </div>
+                </div>
+
+                <!-- Q4 (New) -->
+                <div class="mt-6">
+                    <div id="q1_4-container" class="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                        <p class="font-medium mb-4 text-lg">4. לקבוצת נתונים הוסיפו נתון אחד שגדול משמעותית מכל שאר הנתונים (ערך קיצון). איזה מדד יושפע מכך בצורה החזקה ביותר?</p>
+                        <div class="space-y-3" id="q1_4-options"></div>
+                        <div id="q1_4-feedback" class="mt-4 hidden p-4 rounded-lg font-medium text-sm"></div>
+                    </div>
+                </div>
+
+                <!-- Q5 (New) -->
+                <div class="mt-6">
+                    <div id="q1_5-container" class="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                        <p class="font-medium mb-4 text-lg">5. מה תהיה השונות של קבוצת הנתונים שכל איבריה זהים (למשל: $5, 5, 5, 5$)?</p>
+                        <div class="space-y-3" id="q1_5-options"></div>
+                        <div id="q1_5-feedback" class="mt-4 hidden p-4 rounded-lg font-medium text-sm"></div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Part 2: Transformations -->
+        <section id="part2" class="folder-content bg-white rounded-b-2xl p-6 md:p-8 mb-8 shadow-sm border border-t-0 border-slate-200">
+            <h2 class="text-3xl font-bold text-blue-700 mb-6 flex items-center">
+                טרנספורמציות על נתונים
+            </h2>
+            <p class="mb-6 text-lg">
+                מה קורה כאשר אנחנו מבצעים פעולה חשבונית זהה על <strong>כל</strong> הנתונים בקבוצה (למשל, נותנים פקטור של 5 נקודות לכולם)? 
+            </p>
+
+            <div class="space-y-8">
+                <!-- Addition / Subtraction -->
+                <div class="bg-teal-50 p-6 rounded-xl border border-teal-100 relative overflow-hidden">
+                    <h3 class="text-2xl font-bold text-teal-800 mb-2">פעולת חיבור / חיסור</h3>
+                    <p class="mb-4 text-teal-900">הוספה או הורדה של קבוע ($c$) לכל הנתונים שקולה ל<strong>הזזה</strong> של הגרף כולו ימינה או שמאלה.</p>
+                    
+                    <div class="grid md:grid-cols-2 gap-4 items-center">
+                        <ul class="list-disc list-inside space-y-2 text-teal-900">
+                            <li><strong>מדדי מרכז (הממוצע, החציון, השכיח):</strong> ישתנו באותו האופן (יגדלו/יקטנו ב-$c$).</li>
+                            <li><strong>מדדי פיזור (הטווח, השונות, סטיית התקן):</strong> <span class="font-bold underline">לא ישתנו כלל!</span> המרחק בין הנתונים נשאר זהה.</li>
+                        </ul>
+                        <div class="text-center">
+                            <!-- SVG Visualization for Shift -->
+                            <svg viewBox="0 0 300 100" class="w-full max-w-[250px] mx-auto drop-shadow-md">
+                                <!-- Axis -->
+                                <line x1="10" y1="80" x2="290" y2="80" stroke="black" stroke-width="2"/>
+                                <!-- Original Curve -->
+                                <path d="M 30,80 Q 70,10 110,80" fill="rgba(255, 99, 132, 0.4)" stroke="rgb(255, 99, 132)" stroke-width="2"/>
+                                <!-- Arrow -->
+                                <path d="M 120,60 L 160,60 M 150,50 L 160,60 L 150,70" fill="none" stroke="#333" stroke-width="2"/>
+                                <!-- Shifted Curve -->
+                                <path d="M 170,80 Q 210,10 250,80" fill="rgba(54, 162, 235, 0.4)" stroke="rgb(54, 162, 235)" stroke-width="2"/>
+                                <text x="140" y="45" font-size="12" fill="black">+ c</text>
+                            </svg>
+                            <p class="text-xs text-teal-700 mt-2">גרף הנתונים זז, אבל "רוחבו" (הפיזור) נשאר זהה.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Multiplication / Division -->
+                <div class="bg-orange-50 p-6 rounded-xl border border-orange-100">
+                    <h3 class="text-2xl font-bold text-orange-800 mb-2">פעולת כפל / חילוק</h3>
+                    <p class="mb-4 text-orange-900">הכפלה או חלוקה של כל הנתונים בקבוע חיובי ($k$) גורמת ל<strong>מתיחה</strong> או <strong>כיווץ</strong> של הגרף.</p>
+                    
+                    <div class="grid md:grid-cols-2 gap-4 items-center">
+                        <ul class="list-disc list-inside space-y-2 text-orange-900">
+                            <li><strong>מדדי מרכז:</strong> יוכפלו / יחולקו ב-$k$.</li>
+                            <li><strong>הטווח וסטיית התקן:</strong> יוכפלו / יחולקו ב-$k$. (הפיזור גדל/קטן).</li>
+                            <li><strong>השונות:</strong> תוכפל / תחולק ב- $k^2$ ! (כי השונות היא סטיית התקן בריבוע).</li>
+                        </ul>
+                         <div class="text-center">
+                            <!-- SVG Visualization for Stretch -->
+                            <svg viewBox="0 0 300 100" class="w-full max-w-[250px] mx-auto drop-shadow-md">
+                                <!-- Axis -->
+                                <line x1="10" y1="80" x2="290" y2="80" stroke="black" stroke-width="2"/>
+                                <!-- Original Curve -->
+                                <path d="M 40,80 Q 70,20 100,80" fill="rgba(255, 99, 132, 0.4)" stroke="rgb(255, 99, 132)" stroke-width="2"/>
+                                <!-- Arrow -->
+                                <path d="M 110,50 L 140,50 M 130,40 L 140,50 L 130,60" fill="none" stroke="#333" stroke-width="2"/>
+                                <!-- Stretched Curve -->
+                                <path d="M 150,80 Q 215,30 280,80" fill="rgba(54, 162, 235, 0.4)" stroke="rgb(54, 162, 235)" stroke-width="2"/>
+                                <text x="125" y="35" font-size="12" fill="black">k</text>
+                            </svg>
+                            <p class="text-xs text-orange-700 mt-2">הגרף גם נמתח הלאה מהאפס (מדדי מרכז) וגם מתרחב (מדדי פיזור).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Self Practice 2 -->
+            <div class="border-t pt-6 mt-8">
+                <h3 class="text-xl font-bold mb-4">תרגול עצמי</h3>
+                
+                <!-- Q3 -->
+                <div class="mb-6">
+                    <div id="q3-container" class="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                        <p class="font-medium mb-4 text-lg">
+                            1. ממוצע הציונים במבחן היה $75$ וסטיית התקן הייתה $8$. <br>
+                            המורה החליט לתת לכל התלמידים <strong>תוספת של 5 נקודות</strong>. <br>
+                            מה יהיו הממוצע וסטיית התקן החדשים?
+                        </p>
+                        <div class="space-y-3" id="q3-options">
+                            <!-- Options injected by JS -->
+                        </div>
+                        <div id="q3-feedback" class="mt-4 hidden p-4 rounded-lg font-medium text-sm"></div>
+                    </div>
+                </div>
+
+                <!-- Q4 -->
+                <div class="mb-6">
+                    <div id="q4-container" class="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                        <p class="font-medium mb-4 text-lg">
+                            2. במפעל מסוים השכר הממוצע הוא $6000$ שקלים וסטיית התקן היא $500$ שקלים. <br>
+                            הוחלט להעלות את השכר לכל העובדים ב- $10\%$. <br>
+                            מה תהיה סטיית התקן החדשה של המשכורות?
+                        </p>
+                        <div class="space-y-3" id="q4-options">
+                            <!-- Options injected by JS -->
+                        </div>
+                        <div id="q4-feedback" class="mt-4 hidden p-4 rounded-lg font-medium text-sm"></div>
+                    </div>
+                </div>
+
+                <!-- Q5 -->
+                <div>
+                    <div id="q5-container" class="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                        <p class="font-medium mb-4 text-lg">
+                            3. נתונה סדרת מספרים שבה השונות היא $16$. <br>
+                            כפלו כל מספר בסדרה ב- $3$, ולאחר מכן הוסיפו $4$ לכל תוצאה. <br>
+                            מהי השונות החדשה של סדרת המספרים?
+                        </p>
+                        <div class="space-y-3" id="q5-options">
+                            <!-- Options injected by JS -->
+                        </div>
+                        <div id="q5-feedback" class="mt-4 hidden p-4 rounded-lg font-medium text-sm"></div>
+                    </div>
+                </div>
+
+                <!-- Part 2 - Q4 (New) -->
+                <div class="mt-6">
+                    <div id="q2_4-container" class="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                        <p class="font-medium mb-4 text-lg">
+                            4. קבוצת נתונים מורכבת ממספרים. סטיית התקן היא $12$. <br>
+                            הגדילו כל מספר בקבוצה ב- $20\%$, ולאחר מכן חיסרו $5$ מכל תוצאה. <br>
+                            מהי סטיית התקן החדשה?
+                        </p>
+                        <div class="space-y-3" id="q2_4-options"></div>
+                        <div id="q2_4-feedback" class="mt-4 hidden p-4 rounded-lg font-medium text-sm"></div>
+                    </div>
+                </div>
+
+                <!-- Part 2 - Q5 (New) -->
+                <div class="mt-6">
+                    <div id="q2_5-container" class="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                        <p class="font-medium mb-4 text-lg">
+                            5. במבחן התקבל ממוצע $60$ ושונות $100$. <br>
+                            ניתן פקטור: תחילה הוספו $10$ נקודות לכל ציון, ולאחר מכן הוכפל כל ציון ב- $1.1$. <br>
+                            מה הממוצע החדש ומה השונות החדשה?
+                        </p>
+                        <div class="space-y-3" id="q2_5-options"></div>
+                        <div id="q2_5-feedback" class="mt-4 hidden p-4 rounded-lg font-medium text-sm"></div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Part 3: Final Quiz -->
+        <section id="part3" class="folder-content bg-slate-800 text-white rounded-b-2xl p-6 md:p-8 mb-8 shadow-xl">
+            <h2 class="text-3xl font-bold mb-2 text-yellow-400 flex items-center">
+                <span class="bg-yellow-400 text-slate-800 w-10 h-10 rounded-full flex items-center justify-center ml-3 text-xl">3</span>
+                מבדק מסכם והגשה
+            </h2>
+            <p class="mb-6 text-slate-300">בחנו את עצמכם על החומר הנלמד. הזינו את שמכם והגישו לבדיקה.</p>
+
+            <form id="quiz-form" class="bg-slate-700 p-6 rounded-xl" onsubmit="submitTest(event)">
+                
+                <div class="mb-6">
+                    <label for="student-name" class="block mb-2 font-medium">שם התלמיד/ה:</label>
+                    <input type="text" id="student-name" required placeholder="הקלד/י את שמך כאן..." 
+                           class="w-full md:w-1/2 px-4 py-2 rounded-lg bg-slate-600 text-white border border-slate-500 focus:outline-none focus:border-yellow-400">
+                </div>
+
+                <hr class="border-slate-600 mb-6">
+
+                <!-- Final Q1 -->
+                <div class="mb-6">
+                    <p class="font-medium mb-3">1. במפעל מסוים הוחלט להעלות את שכר כל העובדים ב- 10%. כיצד תשתנה השונות של המשכורות?</p>
+                    <div class="space-y-2 pl-4">
+                        <label class="flex items-center space-x-2 space-x-reverse cursor-pointer">
+                            <input type="radio" name="final_q1" value="a" class="form-radio text-yellow-400 h-5 w-5" required>
+                            <span>תגדל פי $1.1$</span>
+                        </label>
+                        <label class="flex items-center space-x-2 space-x-reverse cursor-pointer">
+                            <input type="radio" name="final_q1" value="b" class="form-radio text-yellow-400 h-5 w-5">
+                            <span>תגדל פי $1.21$ (כלומר, $1.1^2$)</span>
+                        </label>
+                        <label class="flex items-center space-x-2 space-x-reverse cursor-pointer">
+                            <input type="radio" name="final_q1" value="c" class="form-radio text-yellow-400 h-5 w-5">
+                            <span>לא תשתנה כלל</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Final Q2 -->
+                <div class="mb-6">
+                    <p class="font-medium mb-3">2. לכל המספרים בקבוצת נתונים הוסיפו את המספר $12$. איזה מהמדדים הבאים <strong>לא</strong> ישתנה?</p>
+                    <div class="space-y-2 pl-4">
+                        <label class="flex items-center space-x-2 space-x-reverse cursor-pointer">
+                            <input type="radio" name="final_q2" value="a" class="form-radio text-yellow-400 h-5 w-5" required>
+                            <span>ממוצע</span>
+                        </label>
+                        <label class="flex items-center space-x-2 space-x-reverse cursor-pointer">
+                            <input type="radio" name="final_q2" value="b" class="form-radio text-yellow-400 h-5 w-5">
+                            <span>חציון</span>
+                        </label>
+                        <label class="flex items-center space-x-2 space-x-reverse cursor-pointer">
+                            <input type="radio" name="final_q2" value="c" class="form-radio text-yellow-400 h-5 w-5">
+                            <span>טווח</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Final Q3 -->
+                <div class="mb-8">
+                    <p class="font-medium mb-3">3. סטיית התקן של קבוצת נתונים היא $4$. אם נכפיל את כל הנתונים ב- $3$ ולאחר מכן נוסיף $5$ לכל נתון, מה תהיה סטיית התקן החדשה?</p>
+                    <div class="space-y-2 pl-4">
+                        <label class="flex items-center space-x-2 space-x-reverse cursor-pointer">
+                            <input type="radio" name="final_q3" value="a" class="form-radio text-yellow-400 h-5 w-5" required>
+                            <span>$12$</span>
+                        </label>
+                        <label class="flex items-center space-x-2 space-x-reverse cursor-pointer">
+                            <input type="radio" name="final_q3" value="b" class="form-radio text-yellow-400 h-5 w-5">
+                            <span>$17$</span>
+                        </label>
+                        <label class="flex items-center space-x-2 space-x-reverse cursor-pointer">
+                            <input type="radio" name="final_q3" value="c" class="form-radio text-yellow-400 h-5 w-5">
+                            <span>$4$</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Final Q4 (New) -->
+                <div class="mb-8 border-t border-slate-600 pt-6">
+                    <p class="font-medium mb-3">4. לכל מספר בסדרה חיסרו $10$ ולאחר מכן חילקו את התוצאה ב- $2$. הממוצע המקורי היה $70$. מה הממוצע החדש?</p>
+                    <div class="space-y-2 pl-4">
+                        <label class="flex items-center space-x-2 space-x-reverse cursor-pointer">
+                            <input type="radio" name="final_q4" value="a" class="form-radio text-yellow-400 h-5 w-5" required>
+                            <span>$30$</span>
+                        </label>
+                        <label class="flex items-center space-x-2 space-x-reverse cursor-pointer">
+                            <input type="radio" name="final_q4" value="b" class="form-radio text-yellow-400 h-5 w-5">
+                            <span>$25$</span>
+                        </label>
+                        <label class="flex items-center space-x-2 space-x-reverse cursor-pointer">
+                            <input type="radio" name="final_q4" value="c" class="form-radio text-yellow-400 h-5 w-5">
+                            <span>$60$</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Final Q5 (New) -->
+                <div class="mb-8 border-t border-slate-600 pt-6">
+                    <p class="font-medium mb-3">5. קבוצת נתונים עברה טרנספורמציה. השונות החדשה קטנה פי $4$ מהשונות המקורית. איזו פעולה בוודאות נעשתה על הנתונים?</p>
+                    <div class="space-y-2 pl-4">
+                        <label class="flex items-center space-x-2 space-x-reverse cursor-pointer">
+                            <input type="radio" name="final_q5" value="a" class="form-radio text-yellow-400 h-5 w-5" required>
+                            <span>חילקו כל נתון ב- $2$</span>
+                        </label>
+                        <label class="flex items-center space-x-2 space-x-reverse cursor-pointer">
+                            <input type="radio" name="final_q5" value="b" class="form-radio text-yellow-400 h-5 w-5">
+                            <span>חילקו כל נתון ב- $4$</span>
+                        </label>
+                        <label class="flex items-center space-x-2 space-x-reverse cursor-pointer">
+                            <input type="radio" name="final_q5" value="c" class="form-radio text-yellow-400 h-5 w-5">
+                            <span>חיסרו $4$ מכל נתון</span>
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full md:w-auto bg-yellow-400 text-slate-900 font-bold py-3 px-8 rounded-lg hover:bg-yellow-300 transition-colors shadow-md text-lg">
+                    שמור ושלח למורה
+                </button>
+            </form>
+
+            <!-- Result Modal (Hidden by default) -->
+            <div id="result-modal" class="hidden mt-6 bg-green-600 text-white p-6 rounded-xl fade-in text-center">
+                <h3 class="text-2xl font-bold mb-2" id="result-title"></h3>
+                <p id="result-score" class="text-xl mb-4"></p>
+                <div id="result-details" class="text-right text-sm space-y-2 bg-green-700 p-4 rounded-lg">
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer Credit -->
+        <footer class="mt-12 text-center text-slate-500 text-base pb-4 font-medium">
+            הוכן על ידי רגינה צ'ולסקי
+        </footer>
+    </div>
+
+    <!-- JavaScript for Interactivity -->
+    <script>
+        // Data for Practice Questions
+        const practiceData = {
+            q1: {
+                options: [
+                    { text: "ממוצע 164, טווח 30", isCorrect: true, feedback: "כל הכבוד! הממוצע הוא (150+160+160+170+180)/5 = 164. הטווח הוא ההפרש בין הגדול לקטן: 180 - 150 = 30." },
+                    { text: "ממוצע 160, טווח 20", isCorrect: false, feedback: "טעות. הטווח מחושב בין המקסימום למינימום (180 פחות 150), ולא בין נתונים אמצעיים." },
+                    { text: "ממוצע 164, טווח 180", isCorrect: false, feedback: "טעות בחישוב הטווח. טווח הוא *ההפרש* בין הערך הגבוה לנמוך ביותר, לא הערך הגבוה עצמו." }
+                ]
+            },
+            q2: {
+                options: [
+                    { text: "החציון 75, השכיח 70", isCorrect: true, feedback: "נכון מאוד! הנתונים מסודרים: 70, 70, 80, 90. החציון הוא הממוצע של שני איברי האמצע (70+80)/2 = 75. השכיח הוא 70 כי הוא מופיע פעמיים." },
+                    { text: "החציון 70, השכיח 75", isCorrect: false, feedback: "הפכתם בין החציון והשכיח. השכיח הוא הערך שמופיע הכי הרבה פעמים (70), והחציון נמצא באמצע." },
+                    { text: "החציון 80, השכיח 70", isCorrect: false, feedback: "טעות בחישוב החציון. כשיש מספר זוגי של נתונים (4), החציון הוא הממוצע של שני הנתונים האמצעיים: (70+80)/2." }
+                ]
+            },
+            q3: {
+                options: [
+                    { text: "ממוצע 80, סטיית תקן 13", isCorrect: false, feedback: "שים לב! הוספת קבוע לכל הנתונים (הזזה) משנה את הממוצע, אבל **לא משנה כלל** את מדדי הפיזור כמו סטיית התקן. המרחק בין התלמידים נשאר זהה." },
+                    { text: "ממוצע 75, סטיית תקן 8", isCorrect: false, feedback: "התרחשה טרנספורמציה של הוספת 5 נקודות לכולם. לכן, מדדי המרכז (כמו הממוצע) חייבים להשתנות ולגדול ב-5." },
+                    { text: "ממוצע 80, סטיית תקן 8", isCorrect: true, feedback: "מעולה! הממוצע גדל ב-5 (מדד מרכז מושפע מהזזה), אך סטיית התקן נשארת 8 (מדדי פיזור לא מושפעים מהוספה/הורדה)." }
+                ]
+            },
+            q4: {
+                options: [
+                    { text: "סטיית התקן תישאר 500", isCorrect: false, feedback: "טעות. כפל משפיע על כל המדדים. מכיוון שמשכורות הוכפלו ב-1.1 (גידול של 10%), גם מדדי הפיזור מתרחבים באותו יחס." },
+                    { text: "סטיית התקן תהיה 550", isCorrect: true, feedback: "כל הכבוד! בכפל בקבוע חיובי, סטיית התקן מוכפלת באותו קבוע. 500 כפול 1.1 = 550." },
+                    { text: "סטיית התקן תהיה 605", isCorrect: false, feedback: "שים לב, סטיית תקן מוכפלת בקבוע עצמו (1.1). אם זו הייתה שונות, היא הייתה מוכפלת בקבוע בריבוע." }
+                ]
+            },
+            q5: {
+                options: [
+                    { text: "השונות תהיה 144", isCorrect: true, feedback: "מצוין! תוספת 4 לא משנה את השונות (חיבור לא משפיע על פיזור). כפל ב-3 מכפיל את השונות ב-3 בריבוע (כלומר פי 9). 16 כפול 9 = 144." },
+                    { text: "השונות תהיה 48", isCorrect: false, feedback: "טעות. אכן הכפלתם את השונות (16) ב-3, אך זכרו שהשונות תמיד מוכפלת בקבוע **בריבוע** (3 בריבוע = 9)." },
+                    { text: "השונות תהיה 148", isCorrect: false, feedback: "קרוב, הכפלתם נכון פי 9, אבל הוספתם 4 בסוף. זכרו שפעולת חיבור או חיסור לא משפיעה כלל על השונות!" }
+                ]
+            },
+            q1_3: {
+                options: [
+                    { text: "10", isCorrect: true, feedback: "נכון מאוד! הסכום הכולל צריך להיות 4 * 10 = 40. סכום שלושת המספרים הוא 8+12+10 = 30. לכן המספר החסר הוא 40 פחות 30 = 10." },
+                    { text: "12", isCorrect: false, feedback: "לא מדויק. אם המספר היה 12, הסכום היה 42 והממוצע 10.5." },
+                    { text: "0", isCorrect: false, feedback: "לא. זכור שהממוצע שווה לסכום כל המספרים חלקי כמותם." }
+                ]
+            },
+            q1_4: {
+                options: [
+                    { text: "הממוצע", isCorrect: true, feedback: "מעולה! הממוצע מושפע מאוד מערכי קיצון כי הוא לוקח בחשבון את גודלו המדויק של כל ערך. החציון, לעומתו, כמעט ולא יושפע." },
+                    { text: "החציון", isCorrect: false, feedback: "טעות. החציון תלוי רק במיקום הנתונים (האמצעי), ולכן ערך קיצון בקצה לא משנה אותו משמעותית." },
+                    { text: "השכיח", isCorrect: false, feedback: "לא נכון. השכיח הוא הערך שמופיע הכי הרבה פעמים, ערך קיצון בודד לא ישנה אותו כלל." }
+                ]
+            },
+            q1_5: {
+                options: [
+                    { text: "5", isCorrect: false, feedback: "טעות. 5 הוא הממוצע (והחציון והשכיח), אבל לא השונות. שונות מודדת פיזור." },
+                    { text: "0", isCorrect: true, feedback: "נכון! כל הנתונים זהים, כלומר אין שום פיזור או הבדל ביניהם. המרחק מהממוצע הוא 0, ולכן השונות היא 0." },
+                    { text: "25", isCorrect: false, feedback: "לא. נראה שהעליתם את הערך בריבוע, אבל שונות היא לא הערך בריבוע, אלא ממוצע ריבועי המרחקים מהממוצע." }
+                ]
+            },
+            q2_4: {
+                options: [
+                    { text: "14.4", isCorrect: true, feedback: "מצוין! הגדלה ב-20% שקולה להכפלה ב-1.2. סטיית התקן מוכפלת ב-1.2 ולכן 12 כפול 1.2 = 14.4. החיסור של 5 לא משפיע על פיזור הנתונים." },
+                    { text: "9.4", isCorrect: false, feedback: "טעות. נראה שהכפלתם ב-1.2 ולאחר מכן חיסרתם 5 מסטיית התקן. זכרו: פעולות חיבור וחיסור אינן משפיעות כלל על מדדי פיזור (כמו סטיית תקן)!" },
+                    { text: "12", isCorrect: false, feedback: "לא נכון. סטיית תקן אינה מושפעת מחיבור וחיסור, אך היא **כן** מושפעת מכפל וחילוק. יש להכפיל את ה-12 ב-1.2." }
+                ]
+            },
+            q2_5: {
+                options: [
+                    { text: "ממוצע 77, שונות 121", isCorrect: true, feedback: "כל הכבוד! הממוצע מושפע משתי הפעולות (בסדר שלהן): הממוצע החדש הוא (60+10) כפול 1.1 = 77. השונות מושפעת רק מהכפל, ומכיוון שמדובר בשונות, היא מוכפלת **בריבוע** הקבוע: 100 כפול 1.1 בריבוע שזה 100 כפול 1.21 = 121." },
+                    { text: "ממוצע 76, שונות 121", isCorrect: false, feedback: "טעות בחישוב הממוצע. שימו לב לסדר הפעולות: קודם מוסיפים 10 לכל הנתונים, ורק אז מכפילים הכל ב-1.1. לכן הממוצע הוא (60 ועוד 10) כפול 1.1." },
+                    { text: "ממוצע 77, שונות 110", isCorrect: false, feedback: "חישבתם נכון את הממוצע, אבל טעיתם בשונות. זכרו שהשונות מוכפלת בקבוע **בריבוע**, כלומר יש להכפיל את ה-100 ב-1.1 בריבוע (שזה 1.21)." }
+                ]
+            }
+        };
+
+        // Render Practice Questions
+        function renderPracticeQuestion(quizId) {
+            const container = document.getElementById(`${quizId}-options`);
+            practiceData[quizId].options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = "quiz-option w-full text-right p-4 rounded-lg border border-slate-300 bg-white hover:border-blue-500 hover:bg-blue-50 transition font-medium";
+                // MathJax trick for dynamic injection: standard text rendering, and let user run MathJax if needed.
+                btn.innerHTML = opt.text;
+                btn.onclick = () => handlePracticeAnswer(quizId, index, btn);
+                container.appendChild(btn);
+            });
+        }
+
+        function handlePracticeAnswer(quizId, optionIndex, btnElement) {
+            const data = practiceData[quizId];
+            const option = data.options[optionIndex];
+            const feedbackEl = document.getElementById(`${quizId}-feedback`);
+            
+            // Reset button styles
+            const btns = btnElement.parentElement.children;
+            for(let b of btns) {
+                b.classList.remove('border-green-500', 'bg-green-50', 'border-red-500', 'bg-red-50');
+            }
+
+            // Apply specific style based on correctness
+            if (option.isCorrect) {
+                btnElement.classList.add('border-green-500', 'bg-green-50');
+                feedbackEl.className = "mt-4 p-4 rounded-lg font-medium text-sm fade-in bg-green-100 text-green-800 border border-green-200";
+            } else {
+                btnElement.classList.add('border-red-500', 'bg-red-50');
+                feedbackEl.className = "mt-4 p-4 rounded-lg font-medium text-sm fade-in bg-red-100 text-red-800 border border-red-200";
+            }
+            
+            feedbackEl.innerHTML = `<strong>${option.isCorrect ? 'נכון!' : 'לא מדויק.'}</strong> ${option.feedback}`;
+            feedbackEl.classList.remove('hidden');
+        }
+
+        // Initialize practices
+        renderPracticeQuestion('q1');
+        renderPracticeQuestion('q2');
+        renderPracticeQuestion('q1_3');
+        renderPracticeQuestion('q1_4');
+        renderPracticeQuestion('q1_5');
+        
+        renderPracticeQuestion('q3');
+        renderPracticeQuestion('q4');
+        renderPracticeQuestion('q5');
+        renderPracticeQuestion('q2_4');
+        renderPracticeQuestion('q2_5');
+
+        // Tab Switching Logic
+        function switchTab(tabId) {
+            // Hide all folders
+            document.querySelectorAll('.folder-content').forEach(el => {
+                el.classList.remove('active');
+            });
+            // Reset tab buttons
+            document.querySelectorAll('.tab-btn').forEach(el => {
+                el.classList.remove('tab-active');
+                el.classList.add('tab-inactive');
+            });
+
+            // Show selected folder
+            document.getElementById(tabId).classList.add('active');
+            // Highlight selected tab
+            const activeBtn = document.getElementById('tab-' + tabId);
+            activeBtn.classList.remove('tab-inactive');
+            activeBtn.classList.add('tab-active');
+        }
+
+        // Handle Final Quiz Submission
+        function submitTest(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('student-name').value;
+            const q1 = document.querySelector('input[name="final_q1"]:checked').value;
+            const q2 = document.querySelector('input[name="final_q2"]:checked').value;
+            const q3 = document.querySelector('input[name="final_q3"]:checked').value;
+            const q4 = document.querySelector('input[name="final_q4"]:checked').value;
+            const q5 = document.querySelector('input[name="final_q5"]:checked').value;
+
+            let score = 0;
+            let detailsHTML = '';
+
+            // Grading Q1
+            if (q1 === 'b') {
+                score += 20;
+                detailsHTML += '<p>✅ שאלה 1: נכון. בכפל ב- k, השונות מוכפלת ב- k בריבוע.</p>';
+            } else {
+                detailsHTML += '<p>❌ שאלה 1: טעות. שונות מוכפלת בקבוע <strong>בריבוע</strong> (1.1²).</p>';
+            }
+
+            // Grading Q2
+            if (q2 === 'c') {
+                score += 20;
+                detailsHTML += '<p>✅ שאלה 2: נכון. הוספת קבוע אינה משנה את מדדי הפיזור (כמו הטווח).</p>';
+            } else {
+                detailsHTML += '<p>❌ שאלה 2: טעות. הוספת קבוע משנה מדדי מרכז אך <strong>לא</strong> מדדי פיזור (טווח).</p>';
+            }
+
+            // Grading Q3
+            if (q3 === 'a') {
+                score += 20;
+                detailsHTML += '<p>✅ שאלה 3: נכון. סטיית התקן מושפעת רק מכפל ולא מחיבור. 4 כפול 3 = 12.</p>';
+            } else {
+                detailsHTML += '<p>❌ שאלה 3: טעות. רק הכפל ב-3 משפיע, לכן סטיית התקן החדשה היא 4*3 = 12.</p>';
+            }
+
+            // Grading Q4
+            if (q4 === 'a') {
+                score += 20;
+                detailsHTML += '<p>✅ שאלה 4: נכון. הממוצע מושפע מכל פעולות החשבון. (70 - 10) / 2 = 30.</p>';
+            } else {
+                detailsHTML += '<p>❌ שאלה 4: טעות. הממוצע עובר את אותה הטרנספורמציה בדיוק: להחסיר 10 ואז לחלק ב-2.</p>';
+            }
+
+            // Grading Q5
+            if (q5 === 'a') {
+                score += 20;
+                detailsHTML += '<p>✅ שאלה 5: נכון. חלוקה ב-2 מקטינה את השונות פי 2 בריבוע (כלומר קטנה פי 4).</p>';
+            } else {
+                detailsHTML += '<p>❌ שאלה 5: טעות. כיוון ששונות מושפעת מריבוע הקבוע, חלוקה ב-2 מקטינה את השונות פי 4.</p>';
+            }
+
+            // Show Results
+            const modal = document.getElementById('result-modal');
+            const title = document.getElementById('result-title');
+            const scoreDisplay = document.getElementById('result-score');
+            const details = document.getElementById('result-details');
+
+            modal.classList.remove('hidden');
+            
+            if (score === 100) {
+                modal.className = "mt-6 bg-green-600 text-white p-6 rounded-xl fade-in text-center";
+                details.className = "text-right text-sm space-y-2 bg-green-700 p-4 rounded-lg";
+                title.innerText = `כל הכבוד, ${name}! עבודה מצוינת 🏆`;
+            } else if (score >= 66) {
+                modal.className = "mt-6 bg-blue-600 text-white p-6 rounded-xl fade-in text-center";
+                details.className = "text-right text-sm space-y-2 bg-blue-700 p-4 rounded-lg";
+                title.innerText = `עבודה טובה, ${name}! 👍`;
+            } else {
+                modal.className = "mt-6 bg-orange-500 text-white p-6 rounded-xl fade-in text-center";
+                details.className = "text-right text-sm space-y-2 bg-orange-600 p-4 rounded-lg";
+                title.innerText = `כדאי לחזור על החומר שוב, ${name}. 📚`;
+            }
+
+            scoreDisplay.innerText = `הציון שלך: ${score}/100`;
+            details.innerHTML = detailsHTML;
+            
+            // Re-run MathJax if needed for dynamically added elements
+            if(window.MathJax) {
+                MathJax.typesetPromise();
+            }
+
+            // שינוי טקסט הכפתור לחיווי למשתמש
+            const submitBtn = document.querySelector('#quiz-form button[type="submit"]');
+            submitBtn.innerText = "מכין תמונה, אנא המתן...";
+            submitBtn.disabled = true;
+            submitBtn.classList.add('opacity-75', 'cursor-not-allowed');
+
+            // ממתינים מעט כדי לאפשר לציון להופיע בצורה חלקה
+            setTimeout(() => {
+                // לוקחים את חלונית התוצאה ויוצרים לה "כפיל" נסתר ברוחב קבוע למניעת בעיות צילום וגלילה
+                const originalModal = document.getElementById('result-modal');
+                const clone = originalModal.cloneNode(true);
+                
+                clone.style.position = 'fixed';
+                clone.style.top = '0';
+                clone.style.left = '0';
+                clone.style.width = '600px'; // רוחב קבוע ויפה לתמונה
+                clone.style.zIndex = '-9999'; // מוסתר מאחורי המסך
+                clone.style.margin = '0';
+                clone.classList.remove('fade-in'); // ביטול אנימציה שעשויה לשבש את הצילום
+                clone.setAttribute('dir', 'rtl');
+                
+                document.body.appendChild(clone);
+
+                html2canvas(clone, {
+                    scale: 2, // רזולוציה גבוהה
+                    useCORS: true,
+                    backgroundColor: null // רקע שקוף מסביב לקובייה
+                }).then(canvas => {
+                    // יצירת קישור להורדת התמונה
+                    const link = document.createElement('a');
+                    link.download = `משוב_סטטיסטיקה_${name.replace(/\s+/g, '_')}.png`;
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+
+                    // ניקוי והחזרת הכפתור למצבו הרגיל
+                    document.body.removeChild(clone);
+                    submitBtn.innerText = "שמור ושלח למורה";
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('opacity-75', 'cursor-not-allowed');
+                }).catch(err => {
+                    console.error("Screenshot Generation Error:", err);
+                    if (document.body.contains(clone)) {
+                        document.body.removeChild(clone);
+                    }
+                    submitBtn.innerText = "שגיאה בצילום";
+                    setTimeout(() => {
+                        submitBtn.innerText = "שמור ושלח למורה";
+                        submitBtn.disabled = false;
+                        submitBtn.classList.remove('opacity-75', 'cursor-not-allowed');
+                    }, 3000);
+                });
+            }, 600); // המתנה של קצת יותר מחצי שנייה לרנדור מלא
+        }
+    </script>
+</body>
+</html>
